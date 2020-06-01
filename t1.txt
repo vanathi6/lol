@@ -1,0 +1,28 @@
+I=imread("coins.png");
+I=imnoise(I,'gaussian',0,0.005);
+p=im2double(I);
+s=size(p);
+n=10;
+for i=1:s(1)
+    for j=1:s(2)
+        b1=0;b2=0;
+        %choosing pixel u(1,1)
+        %moving 10 position left and bottom 
+             for k=1:n
+                 b1=p(i,j+k)+b1;
+                 b2=p(i+k,j)+b2;
+                        
+             end
+             total=(b1+b2)/20;
+           
+              C=0;h=-1;
+            for l=1:n   
+C1=exp(-abs((p(i,j+l)-total)^2/h^2));
+C2=exp(-abs((p(i+l,j)-total)^2/h^2));
+C=C1+C2+C;
+            end
+           
+         u(i,j)=(1/sum(C))*sum(p(i,j)*C(i));
+    end
+end
+imshow(u,[]); 
